@@ -1,0 +1,20 @@
+service: TestFinchStageRegion
+plugins:
+  - serverless-finch
+custom:
+  stageVars:
+    dev:
+      region: us-east-1
+    prod:
+      region: us-east-2
+  region: ${self:custom.stageVars.${self:provider.stage}.region}
+  client:
+    bucketName: testfinch-${self:provider.stage}
+    distributionFolder: client
+
+provider:
+  name: aws
+  runtime: python3.6
+  stage: ${opt:stage}
+  region: ${self:custom.region}
+  #region: ${self:custom.stageVars.${self:provider.stage}.region}
